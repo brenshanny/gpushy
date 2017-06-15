@@ -48,7 +48,8 @@ class GPushy():
         rows = [a for a in self.current_sheet.col_values(1) if
                 len(a) > 0]
         self.n_rows = len(rows)
-        self.last_row = rows[-1]
+        if len(self.n_rows) > 0:
+            self.last_row = rows[-1]
 
     def sectionize(self, notes):
         return [
