@@ -1,9 +1,10 @@
-Python module designed to add TEMCAGT section notes to a google spreadsheet
+Python script designed to add TEMCAGT section notes to a google spreadsheet
 
 Requires:
 
     - gspread
     - oauth2client
+    - certifi version 2015.4.28
 
 Two environment variables are needed:
 
