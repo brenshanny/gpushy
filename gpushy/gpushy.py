@@ -58,7 +58,7 @@ class GPushy():
             Section(name=n[0], notes=n[1], t_time=n[2],
                     emlode=n[3].split('/')[2].split('_')[0],
                     tank=n[3].split('/')[2].split('_')[-1],
-                    ntiles=len(n[4]), nvetos=n[5], rois=n[6]) for n in notes
+                    ntiles=n[4], nvetos=n[5], rois=n[6]) for n in notes
         ]
 
     def grab_all_notes(self):
@@ -221,7 +221,10 @@ class Section():
         self.rois = rois
         self.ntiles = ntiles
         self.nvetos = nvetos
-        self.veto_percent = float(nvetos) / float(ntiles)
+        if nvetoes is None or ntiles is None:
+            self.veto_percent = None
+        else:
+            self.veto_percent = float(nvetos) / float(len(ntiles))
 
 
 if __name__ == '__main__':
