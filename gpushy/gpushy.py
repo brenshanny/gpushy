@@ -133,13 +133,13 @@ class TemcaNotes():
         except KeyError:
             tiles = None
         if tiles is not None:
-            vetoes = len([n for n in tiles if any(n[u'vetoed'])])
+            vetos = len([n for n in tiles if any(n[u'vetoed'])])
         else:
-            vetoes = None
+            vetos = None
         rois = f[u'montage'][u'rois']
         return [
                 name, notes, t_time, save_dir,
-                tiles, vetoes, rois
+                tiles, vetos, rois
                 ]
 
     def crawl_notes(self, last_slot=None, stop_number=None):
@@ -221,7 +221,7 @@ class Section():
         self.rois = rois
         self.ntiles = ntiles
         self.nvetos = nvetos
-        if nvetoes is None or ntiles is None:
+        if nvetos is None or ntiles is None:
             self.veto_percent = None
         else:
             self.veto_percent = float(nvetos) / float(len(ntiles))
