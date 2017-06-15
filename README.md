@@ -1,4 +1,4 @@
-Python module designed to add section notes to a google spreadsheet
+Python module designed to add TEMCAGT section notes to a google spreadsheet
 
 Requires:
 
@@ -13,6 +13,8 @@ Two environment variables are needed:
     - GOOGLE_APPLICATION_CREDENTIALS
         - This is the path to the credentials json that is required
           by gspread
+        - How to obtain credentials:
+            - http://gspread.readthedocs.io/en/latest/oauth2.html
 
 Arguments:
     
