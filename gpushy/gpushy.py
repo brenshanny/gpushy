@@ -48,7 +48,7 @@ class GPushy():
         rows = [a for a in self.current_sheet.col_values(1) if
                 len(a) > 0]
         self.n_rows = len(rows)
-        if len(self.n_rows) > 0:
+        if self.n_rows > 0:
             self.last_row = rows[-1]
         else:
             self.last_row = None
