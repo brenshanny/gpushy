@@ -47,3 +47,5 @@ Notes:
       last populated cell in the spreadsheet, it will be skipped and needs to be manually added into the
       spreadsheet
     - Example keywords would be: 'r47', 'ldms2, etc. Any file that includes this keyword will be parsed
+    - Gspread currently has an issue with the certifi module, and requires that certifi version 
+      2015.4.28 be used in order to work properly
