@@ -219,7 +219,10 @@ class Section():
         self.notes = notes
         self.t_time = t_time
         self.rois = rois
-        self.ntiles = ntiles
+        if ntiles is not None:
+            self.ntiles = len(ntiles)
+        else:
+            self.ntiles = None
         self.nvetos = nvetos
         if nvetos is None or ntiles is None:
             self.veto_percent = None
