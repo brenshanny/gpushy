@@ -98,7 +98,7 @@ class GPushy():
             raise Exception("Spreadsheet already populated! "
                             "Please run update function!")
         sections = self.grab_all_notes()
-        self.push_sections(1, sections)
+        self.push_sections(self.n_rows, sections)
 
     def update(self, stop_number=None):
         if not self.connected():
