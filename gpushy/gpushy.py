@@ -8,13 +8,13 @@ import time
 
 
 class GPushy():
-    def __init__(self, notes_dir, sheet_name):
+    def __init__(self, notes_dir, sheet_name, note_keyword):
         try:
             self.sh_key = os.environ['TEMCA_GOOGLE_SPREADSHEET_KEY']
         except KeyError:
             raise Exception("Google spreadsheet key not set!")
         self.notes_locations = notes_dir
-        self.parser = TemcaNotes(notes_dir)
+        self.parser = TemcaNotes(notes_dir, note_keyword)
         self.sheet_name = sheet_name
         self.current_sheet = None
 
@@ -109,8 +109,9 @@ class GPushy():
 
 
 class TemcaNotes():
-    def __init__(self, notes_dir):
+    def __init__(self, notes_dir, keyword):
         self.notes_dir = os.path.expanduser(notes_dir)
+        self.keyword = keyword
 
     def parse_note(self, fn):
         print("Parsing: {}".format(fn))
@@ -159,8 +160,7 @@ class TemcaNotes():
         stuff.sort()
         for n in stuff:
             if os.path.isdir(os.path.join(self.notes_dir, n)):
-                if 'r47' in n:
-                    # TODO Set 'r47' as pass thorugh var
+                if self.keyword in n:
                     if last_slot is not None:
                         dir_n = int(str(n).split('_')[-1])
                         if dir_n > last_slot:
@@ -231,12 +231,16 @@ if __name__ == '__main__':
     arg_parser.add_argument('-i', '--initial', action='store_true')
     arg_parser.add_argument('-u', '--update', action='store_true')
     arg_parser.add_argument('-st', '--stop_number', type=int)
+    arg_parser.add_argument('-nk', '--note_keyword', type=str)
     ops = arg_parser.parse_args()
 
     if ops.source is None or ops.sheet_name is None:
         raise Exception("Please supply a source directory and a "
                         "sheet name to update!")
-    pusher = GPushy(ops.source, ops.sheet_name)
+    if ops.note_keyword is None:
+        raise Exception("Please supply a note keyword! This allows the parser"
+                        "to find all the notes that contain this id")
+    pusher = GPushy(ops.source, ops.sheet_name, ops.note_keyword)
     if ops.initial:
         pusher.initial_push()
     if ops.update:
