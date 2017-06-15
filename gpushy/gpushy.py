@@ -50,6 +50,8 @@ class GPushy():
         self.n_rows = len(rows)
         if len(self.n_rows) > 0:
             self.last_row = rows[-1]
+        else:
+            self.last_row = None
 
     def sectionize(self, notes):
         return [
@@ -98,10 +100,10 @@ class GPushy():
         sections = self.grab_all_notes()
         self.push_sections(1, sections)
 
-    def update(self):
+    def update(self, stop_number=None):
         if not self.connected():
             self.connect()
-        notes = self.parser.crawl_notes(self.last_row)
+        notes = self.parser.crawl_notes(self.last_row, stop_number=stop_number)
         sections = self.sectionize(notes)
         self.push_sections(self.n_rows, sections)
 
@@ -139,7 +141,7 @@ class TemcaNotes():
                 tiles, vetoes, rois
                 ]
 
-    def crawl_notes(self, last_slot=None):
+    def crawl_notes(self, last_slot=None, stop_number=None):
         print("Crawling: {}".format(self.notes_dir))
         if not os.path.exists(self.notes_dir):
             raise Exception("No such directory! {}".format(self.notes_dir))
@@ -158,15 +160,20 @@ class TemcaNotes():
         for n in stuff:
             if os.path.isdir(os.path.join(self.notes_dir, n)):
                 if 'r47' in n:
+                    # TODO Set 'r47' as pass thorugh var
                     if last_slot is not None:
                         dir_n = int(str(n).split('_')[-1])
                         if dir_n > last_slot:
-                            dirs.append(n)
-
+                            if stop_number is not None and dir_n > stop_number:
+                                continue
+                            else:
+                                dirs.append(n)
+                        else:
+                            continue
                     else:
                         dirs.append(n)
                 else:
-                    pass
+                    continue
         for d in dirs:
             search = glob.glob('{}/{}/*_finished.json'.format(
                 self.notes_dir, d, d))
@@ -223,10 +230,18 @@ if __name__ == '__main__':
     arg_parser.add_argument('-n', '--sheet_name', type=str)
     arg_parser.add_argument('-i', '--initial', action='store_true')
     arg_parser.add_argument('-u', '--update', action='store_true')
+    arg_parser.add_argument('-st', '--stop_number', type=int)
     ops = arg_parser.parse_args()
 
+    if ops.source is None or ops.sheet_name is None:
+        raise Exception("Please supply a source directory and a "
+                        "sheet name to update!")
     pusher = GPushy(ops.source, ops.sheet_name)
     if ops.initial:
         pusher.initial_push()
     if ops.update:
-        pusher.update()
+        if ops.stop_number:
+            st = ops.stop_number
+        else:
+            st = None
+        pusher.update(stop_number=st)
