@@ -239,7 +239,7 @@ if __name__ == '__main__':
                         "sheet name to update!")
     if ops.note_keyword is None:
         raise Exception("Please supply a note keyword! This allows the parser"
-                        "to find all the notes that contain this id")
+                        "to find all the notes that contain this keyword")
     pusher = GPushy(ops.source, ops.sheet_name, ops.note_keyword)
     if ops.initial:
         pusher.initial_push()
