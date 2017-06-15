@@ -176,14 +176,14 @@ class TemcaNotes():
                     continue
         for d in dirs:
             search = glob.glob('{}/{}/*_finished.json'.format(
-                self.notes_dir, d, d))
+                self.notes_dir, d))
             if len(search) == 1:
                 notes.append(self.parse_note(search[-1]))
             elif len(search) > 1:
                 print("Multiple jsons found at: {}".format(d))
             else:
                 search2 = glob.glob('{}/{}/{}.json'.format(
-                    self.notes_dir, d))
+                    self.notes_dir, d, d))
                 if len(search2) == 1:
                     notes.append(self.parse_note(search2[-1]))
                 elif len(search) > 1:
